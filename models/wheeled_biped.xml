@@ -1,0 +1,67 @@
+<mujoco model="wheeled_biped">
+  <option cone="elliptic" impratio="100" solver="Newton" integrator="implicitfast" timestep="0.001"/>
+
+  <default>
+    <geom friction="2 0.005 0.0001"/>
+    <motor gear="1"/>
+  </default>
+
+  <worldbody>
+    <light pos="0 0 4" dir="0 0 -1"/>
+    <geom name="floor" type="plane" size="20 20 0.1" rgba="0.5 0.5 0.5 1"/>
+
+    <!-- Torso origin sits at wheel_radius + 2*link_length*cos(45deg) above the
+         floor, which puts both wheels exactly in contact in the nominal pose. -->
+    <body name="torso" pos="0 0 1.33137085">
+      <include file="planar_base.xml"/>
+      <geom name="torso" type="box" size="1.0 0.3 0.3" mass="10" rgba="0.3 0.4 0.7 1"/>
+
+      <!-- Legs are separated fore/aft along x; each wheel hangs directly below
+           its hip in the nominal pose, giving a 1.6 m contact span. -->
+      <body name="rear_thigh" pos="-0.8 0 0">
+        <joint name="rear_hip" type="hinge" axis="0 1 0"/>
+        <geom name="rear_thigh" type="box" pos="0.4 0 0" size="0.4 0.1 0.1" mass="2" rgba="0.7 0.5 0.3 1"/>
+        <body name="rear_shin" pos="0.8 0 0">
+          <joint name="rear_knee" type="hinge" axis="0 1 0"/>
+          <geom name="rear_shin" type="box" pos="0.4 0 0" size="0.4 0.1 0.1" mass="2" rgba="0.7 0.5 0.3 1"/>
+          <body name="rear_wheel" pos="0.8 0 0">
+            <joint name="rear_ankle" type="hinge" axis="0 1 0"/>
+            <!-- Sphere geom for a single clean contact point; inertia overridden
+                 to a thin disk (m*r^2/2 spin, m*r^2/4 transverse) so the wheel
+                 spins like a wheel rather than a solid ball. -->
+            <inertial pos="0 0 0" mass="0.2" diaginertia="0.002 0.004 0.002"/>
+            <geom name="rear_wheel" type="sphere" size="0.2" rgba="0.2 0.2 0.2 1"/>
+          </body>
+        </body>
+      </body>
+
+      <body name="front_thigh" pos="0.8 0 0">
+        <joint name="front_hip" type="hinge" axis="0 1 0"/>
+        <geom name="front_thigh" type="box" pos="0.4 0 0" size="0.4 0.1 0.1" mass="2" rgba="0.7 0.5 0.3 1"/>
+        <body name="front_shin" pos="0.8 0 0">
+          <joint name="front_knee" type="hinge" axis="0 1 0"/>
+          <geom name="front_shin" type="box" pos="0.4 0 0" size="0.4 0.1 0.1" mass="2" rgba="0.7 0.5 0.3 1"/>
+          <body name="front_wheel" pos="0.8 0 0">
+            <joint name="front_ankle" type="hinge" axis="0 1 0"/>
+            <inertial pos="0 0 0" mass="0.2" diaginertia="0.002 0.004 0.002"/>
+            <geom name="front_wheel" type="sphere" size="0.2" rgba="0.2 0.2 0.2 1"/>
+          </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+
+  <actuator>
+    <motor name="rear_hip" joint="rear_hip"/>
+    <motor name="rear_knee" joint="rear_knee"/>
+    <motor name="rear_ankle" joint="rear_ankle"/>
+    <motor name="front_hip" joint="front_hip"/>
+    <motor name="front_knee" joint="front_knee"/>
+    <motor name="front_ankle" joint="front_ankle"/>
+  </actuator>
+
+  <keyframe>
+    <!-- base_x base_z base_pitch | rear: hip knee ankle | front: hip knee ankle -->
+    <key name="stand" qpos="0 0 0  0.78539816 1.57079633 0  2.35619449 -1.57079633 0"/>
+  </keyframe>
+</mujoco>

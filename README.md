@@ -19,6 +19,23 @@ scripts/         # runnable experiments (creep test, etc.)
 logs/            # gitignored
 ```
 
+## Running
+
+Experiments are plain scripts, run with the venv interpreter:
+
+```
+.venv\Scripts\python.exe scripts\creep_test.py
+```
+
+Each experiment has a `VIEW` constant at the top. Setting it to `True` opens the interactive
+viewer and paces the run to wall-clock time, so a 30 s experiment takes 30 s of real time.
+In the viewer, double-click a body to select it, then ctrl-right-drag to push it or
+ctrl-left-drag to twist it.
+
+`scripts/replay.py` plays a logged run back in the viewer without simulating anything. It reads
+the model name from the start of the log filename, so logs stay tied to the robot that produced
+them.
+
 ## Models
 
 ### Wheeled biped

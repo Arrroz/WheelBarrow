@@ -1,10 +1,13 @@
 <mujoco model="wheeled_biped">
-  <option cone="elliptic" impratio="100" solver="Newton" integrator="implicitfast" timestep="0.001"/>
+  <option cone="elliptic" impratio="1000" solver="Newton" integrator="implicitfast" timestep="0.001"/>
 
   <default>
     <geom friction="2 0.005 0.0001"/>
     <motor gear="1"/>
   </default>
+
+  <!-- group 1 = legs, group 2 = wheels, on both joints and geoms -->
+
 
   <worldbody>
     <light pos="0 0 4" dir="0 0 -1"/>
@@ -19,32 +22,32 @@
       <!-- Legs are separated fore/aft along x; each wheel hangs directly below
            its hip in the nominal pose, giving a 1.6 m contact span. -->
       <body name="rear_thigh" pos="-0.8 0 0">
-        <joint name="rear_hip" type="hinge" axis="0 1 0"/>
+        <joint name="rear_hip" type="hinge" axis="0 1 0" group="1"/>
         <geom name="rear_thigh" type="box" pos="0.4 0 0" size="0.4 0.1 0.1" mass="2" rgba="0.7 0.5 0.3 1"/>
         <body name="rear_shin" pos="0.8 0 0">
-          <joint name="rear_knee" type="hinge" axis="0 1 0"/>
+          <joint name="rear_knee" type="hinge" axis="0 1 0" group="1"/>
           <geom name="rear_shin" type="box" pos="0.4 0 0" size="0.4 0.1 0.1" mass="2" rgba="0.7 0.5 0.3 1"/>
           <body name="rear_wheel" pos="0.8 0 0">
-            <joint name="rear_ankle" type="hinge" axis="0 1 0"/>
+            <joint name="rear_ankle" type="hinge" axis="0 1 0" group="2"/>
             <!-- Sphere geom for a single clean contact point; inertia overridden
                  to a thin disk (m*r^2/2 spin, m*r^2/4 transverse) so the wheel
                  spins like a wheel rather than a solid ball. -->
             <inertial pos="0 0 0" mass="0.2" diaginertia="0.002 0.004 0.002"/>
-            <geom name="rear_wheel" type="sphere" size="0.2" rgba="0.2 0.2 0.2 1"/>
+            <geom name="rear_wheel" type="sphere" size="0.2" rgba="0.2 0.2 0.2 1" group="2"/>
           </body>
         </body>
       </body>
 
       <body name="front_thigh" pos="0.8 0 0">
-        <joint name="front_hip" type="hinge" axis="0 1 0"/>
+        <joint name="front_hip" type="hinge" axis="0 1 0" group="1"/>
         <geom name="front_thigh" type="box" pos="0.4 0 0" size="0.4 0.1 0.1" mass="2" rgba="0.7 0.5 0.3 1"/>
         <body name="front_shin" pos="0.8 0 0">
-          <joint name="front_knee" type="hinge" axis="0 1 0"/>
+          <joint name="front_knee" type="hinge" axis="0 1 0" group="1"/>
           <geom name="front_shin" type="box" pos="0.4 0 0" size="0.4 0.1 0.1" mass="2" rgba="0.7 0.5 0.3 1"/>
           <body name="front_wheel" pos="0.8 0 0">
-            <joint name="front_ankle" type="hinge" axis="0 1 0"/>
+            <joint name="front_ankle" type="hinge" axis="0 1 0" group="2"/>
             <inertial pos="0 0 0" mass="0.2" diaginertia="0.002 0.004 0.002"/>
-            <geom name="front_wheel" type="sphere" size="0.2" rgba="0.2 0.2 0.2 1"/>
+            <geom name="front_wheel" type="sphere" size="0.2" rgba="0.2 0.2 0.2 1" group="2"/>
           </body>
         </body>
       </body>

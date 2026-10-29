@@ -33,6 +33,24 @@ def jacobian(m, d, body=None, site=None):
     return jacp, jacr
 
 
+def contact_jacobian(m, d, geom):
+    """Translational and rotational jacobians at a geom's contact point.
+
+    The point is taken from mujoco's contact data, on the body that owns the
+    geom, so it follows the contact rather than rotating with a wheel. Returns
+    None when the geom is not in contact.
+    """
+    gid = m.geom(geom).id
+    for i in range(d.ncon):
+        c = d.contact[i]
+        if gid in (c.geom1, c.geom2):
+            jacp = np.zeros((3, m.nv))
+            jacr = np.zeros((3, m.nv))
+            mujoco.mj_jac(m, d, jacp, jacr, c.pos, m.geom_bodyid[gid])
+            return jacp, jacr
+    return None
+
+
 def mass_matrix(m, d):
     """The nv x nv mass matrix, expanded from mujoco's sparse storage."""
     full = np.zeros((m.nv, m.nv))

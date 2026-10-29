@@ -2,7 +2,7 @@
   <option cone="elliptic" impratio="1000" solver="Newton" integrator="implicitfast" timestep="0.001"/>
 
   <default>
-    <geom friction="2 0.005 0.0001"/>
+    <geom friction="1 0.005 0.0001"/>
     <motor gear="1"/>
   </default>
 
@@ -55,12 +55,12 @@
   </worldbody>
 
   <actuator>
-    <motor name="rear_hip" joint="rear_hip"/>
-    <motor name="rear_knee" joint="rear_knee"/>
-    <motor name="rear_ankle" joint="rear_ankle"/>
-    <motor name="front_hip" joint="front_hip"/>
-    <motor name="front_knee" joint="front_knee"/>
-    <motor name="front_ankle" joint="front_ankle"/>
+    <motor name="rear_hip" joint="rear_hip" ctrllimited="true" ctrlrange="-35 35"/>
+    <motor name="rear_knee" joint="rear_knee" ctrllimited="true" ctrlrange="-35 35"/>
+    <motor name="rear_ankle" joint="rear_ankle" ctrllimited="true" ctrlrange="-5 5"/>
+    <motor name="front_hip" joint="front_hip" ctrllimited="true" ctrlrange="-35 35"/>
+    <motor name="front_knee" joint="front_knee" ctrllimited="true" ctrlrange="-35 35"/>
+    <motor name="front_ankle" joint="front_ankle" ctrllimited="true" ctrlrange="-5 5"/>
   </actuator>
 
   <keyframe>

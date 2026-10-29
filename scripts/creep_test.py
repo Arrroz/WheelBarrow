@@ -39,6 +39,10 @@ DURATION = 30.0
 LOG_HZ = 100
 SETTLE_TIME = 2.0  # transient discarded when measuring drift
 
+# The wheels' small spin inertia makes the default damping unstable at this
+# timestep; the hold diverges somewhere between 20 and 30.
+WHEEL_KD = 10.0
+
 # Watch the run in the viewer. Paced to wall-clock time, so each variant takes
 # DURATION seconds of real time.
 VIEW = False
@@ -67,7 +71,13 @@ def run(variant):
     m, d = model.load(MODEL)
     legs = model.joints_in_group(m, LEG_GROUP)
     wheels = model.joints_in_group(m, WHEEL_GROUP)
-    hold = PDHold(m, d, legs + (wheels if variant == "B" else []))
+    leg_hold = PDHold(m, d, legs)
+    wheel_hold = PDHold(m, d, wheels, kd=WHEEL_KD) if variant == "B" else None
+
+    def hold(m, d):
+        leg_hold(m, d)
+        if wheel_hold is not None:
+            wheel_hold(m, d)
 
     joints = model.joint_names(m)
     qadr = [m.joint(j).qposadr[0] for j in joints]

@@ -3,5 +3,5 @@
 <mujocoinclude>
   <joint name="base_x" type="slide" axis="1 0 0"/>
   <joint name="base_z" type="slide" axis="0 0 1"/>
-  <joint name="base_pitch" type="hinge" axis="0 1 0"/>
+  <joint name="base_pitch" type="hinge" axis="0 -1 0"/>
 </mujocoinclude>

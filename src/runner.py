@@ -26,9 +26,10 @@ def run(m, d, control=None, duration=None, sample_hz=None, on_sample=None, view=
     samples = []
 
     def step(i):
+        mujoco.mj_step1(m, d)
         if control is not None:
             control(m, d)
-        mujoco.mj_step(m, d)
+        mujoco.mj_step2(m, d)
         if decimation and on_sample is not None and i % decimation == 0:
             samples.append(on_sample(m, d))
 

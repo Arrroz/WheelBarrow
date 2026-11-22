@@ -10,7 +10,7 @@ class BodyController:
         self.leg_controllers = leg_controllers
         self.kp, self.ki, self.kd = kp, ki, kd
 
-        self.body = m.body("torso").id
+        self.body = m.body("body").id
         self.ref_pos = d.xipos[self.body].copy()
         self.ref_quat = d.xquat[self.body].copy()
         self.mass = m.body_mass[self.body]
